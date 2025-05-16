@@ -16,7 +16,7 @@ exports.config = {
     browserName: 'chrome'
   },
   directConnect: true,
-  baseUrl: 'https://intprog-final-backend.onrender.com',
+  baseUrl: 'https://planas-fullstack-user-management.onrender.com',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,

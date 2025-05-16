@@ -7,8 +7,7 @@ import { AccountService, AlertService } from '../../_services';
 import { MustMatch } from '../../_helpers';
 
 @Component({
-    templateUrl: 'add-edit.component.html',
-    standalone: false
+    templateUrl: 'add-edit.component.html'
 })
 export class AddEditComponent implements OnInit {
     form: UntypedFormGroup;
@@ -16,6 +15,7 @@ export class AddEditComponent implements OnInit {
     isAddMode: boolean;
     loading = false;
     submitted = false;
+    deleting = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -99,5 +99,23 @@ export class AddEditComponent implements OnInit {
                     this.loading = false;
                 }
             });
+    }
+
+    onDelete() {
+        if (confirm('Are you sure you want to delete this account?')) {
+            this.deleting = true;
+            this.accountService.delete(this.id)
+                .pipe(first())
+                .subscribe({
+                    next: () => {
+                        this.alertService.success('Account deleted successfully', { keepAfterRouteChange: true });
+                        this.router.navigate(['../../'], { relativeTo: this.route });
+                    },
+                    error: error => {
+                        this.alertService.error(error);
+                        this.deleting = false;
+                    }
+                });
+        }
     }
 }

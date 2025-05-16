@@ -2,12 +2,12 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-
-import { AccountService, AlertService } from '../../_services';
-import { MustMatch } from '../../_helpers';
+import { AccountService, AlertService } from '@app/_services';
+import { MustMatch } from '@app/_helpers';
 
 @Component({
-    templateUrl: 'add-edit.component.html'
+    templateUrl: 'add-edit.component.html',
+    standalone: false
 })
 export class AddEditComponent implements OnInit {
     form: UntypedFormGroup;
@@ -23,21 +23,21 @@ export class AddEditComponent implements OnInit {
         private router: Router,
         private accountService: AccountService,
         private alertService: AlertService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.id = this.route.snapshot.params['id'];
         this.isAddMode = !this.id;
-
+        
         this.form = this.formBuilder.group({
             title: ['', Validators.required],
-            firstName: ['', Validators.required],
+            firstName: ['', Validators.required], 
             lastName: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
-            role: ['User', Validators.required],
+            role: ['', Validators.required],
+            status: ['Active'],
             password: ['', [Validators.minLength(6), this.isAddMode ? Validators.required : Validators.nullValidator]],
-            confirmPassword: [''],
-            status: ['InActive']
+            confirmPassword: ['']
         }, {
             validator: MustMatch('password', 'confirmPassword')
         });
